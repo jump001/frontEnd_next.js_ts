@@ -5,7 +5,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { TextField } from "formik-material-ui";
 import { Formik, Form, Field, FormikProps } from "formik";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { Box, CardActionArea, Typography } from "@mui/material";
 import { store, useAppDispatch } from "@/store/store";
 import { signUp, userSelector } from "@/store/slice/userSlice";
@@ -14,11 +14,39 @@ import { useSelector } from "react-redux";
 import { blue, red } from "@mui/material/colors";
 
 
+import Stack from "@mui/material/Stack";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 type Props = {};
 
-export default function register({}: Props) {
+export default function Register({}: Props) {
   const dispatch = useAppDispatch();
   const user = useSelector(userSelector);
+  const router = useRouter();
+
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
      
   const showForm = ({
     values,
@@ -63,14 +91,14 @@ export default function register({}: Props) {
           autoComplete="current-password"
         />
 
-        <Button type="submit" fullWidth variant="contained" color="primary">
+        <Button type="submit" fullWidth variant="contained" color="primary" onClick={handleClick}>
           Register
         </Button>
         <Button
           fullWidth
           size="small"
           color="primary"
-          onClick={() => Router.push("/login")}
+          onClick={() => router.push("/login")}
         >
           Cancel
         </Button>
@@ -100,20 +128,22 @@ export default function register({}: Props) {
             title="Contemplative Reptile"
           />
           <CardContent>
-          <Typography sx={{bgcolor:'#ef9a9a'}}>{user.error}</Typography>
+          <Stack spacing={2} sx={{ width: '100%' }}>
+         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+         {user.error}
+        </Alert>
+         </Snackbar>
+       </Stack>
 
             <Formik
               initialValues={{ name: "", email: "", password: "" }}
-              onSubmit={async (values) => {
-                
+              onSubmit={async (values) => {            
                   const response = await dispatch(signUp(values))
                   if (response.meta.requestStatus === "fulfilled") {
-                    alert("ลงทะเบียนเรียบร้อย");
+                   // alert("ลงทะเบียนเรียบร้อย");
                     router.push("/login");
-                   } else {  
-                  alert("ข้อมูลที่รับมาไม่ถูกต้อง")
                    }
-             
               }}
             >
               {(props) => showForm(props)}
@@ -121,18 +151,7 @@ export default function register({}: Props) {
           </CardContent>
         </Card>
 
-        <style jsx global>
-          {`
-            body {
-              min-height: 100vh;
-              position: relative;
-              margin: 0;
-              background-size: cover;
-              background-image: url("/static/img/bgr.jpg");
-              text-align: center;
-            }
-          `}
-        </style>
+   
       </Box>
     </React.Fragment>
   );

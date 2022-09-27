@@ -2,10 +2,11 @@ import Layout from "@/components/Layouts/Layout";
 import { userSelector } from "@/store/slice/userSlice";
 import React from "react";
 import { useSelector } from "react-redux";
+import withAuth from '@/components/withAuth'
 
 type Props = {};
 
-export default function Index({}: Props) {
+const Index =({}: Props) =>{
   const user = useSelector(userSelector);
 
   return (
@@ -14,3 +15,5 @@ export default function Index({}: Props) {
     </Layout>
   );
 }
+
+export default withAuth(Index);

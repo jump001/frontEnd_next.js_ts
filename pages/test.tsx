@@ -27,19 +27,19 @@ export default function CustomizedSnackbars() {
   };
 
   return (
-    <Stack spacing={2} sx={{ width: '10%' }}>
+    <Stack spacing={2} sx={{ width: '100%' }}>
       <Button variant="outlined" onClick={handleClick}>
         Open success snackbar
       </Button>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           This is a success message!
         </Alert>
       </Snackbar>
-      {/* <Alert severity="error">This is an error message!</Alert>
+      <Alert severity="error">This is an error message!</Alert>
       <Alert severity="warning">This is a warning message!</Alert>
       <Alert severity="info">This is an information message!</Alert>
-      <Alert severity="success">This is a success message!</Alert> */}
+      <Alert severity="success">This is a success message!</Alert>
     </Stack>
   );
 }
