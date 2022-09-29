@@ -15,6 +15,8 @@ const initialState: ShopState = {
   shops: [],   
 };
 
+
+
 //อันนี้จะเป็นการยิง รีเควสในการดึงข้อมูลสินค้าไปที่serverService
 export const getShops = createAsyncThunk(
   "shops/get",
@@ -23,7 +25,7 @@ export const getShops = createAsyncThunk(
   }
 );
 
-const productSlice = createSlice({
+const shopSlice = createSlice({
   name: "product",                        
   initialState: initialState,            
   reducers: {},                           
@@ -35,5 +37,7 @@ const productSlice = createSlice({
   },
 });
 
+  // export common user selector
+export const shopSelector = (store: RootState): Shops[] | undefined =>store.shop.shops;
 
-export default productSlice.reducer;
+export default shopSlice.reducer;

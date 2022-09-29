@@ -1,6 +1,6 @@
 
 export interface Shops {
-    id:       string;
+    id?:       string;
     name:     string;
     photo:    string;
     location: Location;

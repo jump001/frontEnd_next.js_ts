@@ -58,8 +58,13 @@ export async function getSession() {
 
 export const getShops = async (keyword?: string): Promise<Shops[]> => {  //import typeมาจาก product.model.ts
   if (keyword) {   //ถ้ามี จะทำการแนบkeyword แล้วbackend จะreturnข้อมูลมา  โดยยิงตรงไปที่ backend
-    return (await httpClient.get(`/shop/keyword/${keyword}`)).data;  
+    return (await httpClient.get(`/shop/keyword/${keyword}`)).data.data;  
   } else {
-    return (await httpClient.get(`/shop`)).data;  //ถ้าไม่มี keyword จะเป็นการqueryข้อมูลทั้งหมด
+    return (await httpClient.get(`/shop`)).data.data;  //ถ้าไม่มี keyword จะเป็นการqueryข้อมูลทั้งหมด
   }
+};
+
+export const doGetStockById = async (id: string) => {
+  const response = await httpClient.get(`/shop/${id}`);
+  return response.data.data;
 };
